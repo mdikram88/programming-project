@@ -1,0 +1,887 @@
+openapi: 3.0.0
+info:
+  title: Quantified Self App
+  contact:
+    email: "21f2000712@student.onlinedegree.iitm.ac.in"
+  version: 1.0.0
+    
+servers:
+ - url: http://127.0.0.1:8000/
+  
+  
+  
+paths:
+  /login:
+    post:
+      tags:
+      - "Login"
+      summary: "For Login"
+      description: "To Login and get Authentication-Toke"
+      operationId: "login"
+      parameters:
+      
+      - in: "query"
+        name: "email"
+        description: "Enter Email"
+        required: true
+        schema:
+          type: string
+          example: "game388019@gmail.com"
+          
+      - in: "query"
+        name: "password"
+        description: "Enter Password"
+        required: true
+        schema:
+          type: string
+          example: "12345678"
+      
+      responses:
+        "200": 
+          description: "Login Successfully"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                    properties:
+                      user_id:
+                        type: integer
+                        example: 1
+                        
+                      password:
+                        type: string
+                        example: "12345678"
+                      
+                      name:
+                        type: string
+                        example: "Mohd Ikram"
+                        
+                      backup:
+                        type: string
+                        example: "@#$%^&"
+                        
+                      age:
+                        type: integer
+                        example: 22
+                      
+                      gender:
+                        type: string
+                        example: "M"
+        
+        "400":
+          description: "Invalid Email"
+          
+        "401":
+          description: "Incorrect password"
+        
+        "404":
+          description: "Email Doesn't Exist"
+          
+  /reset_password:
+    post:
+      tags:
+      - "Reset password"
+      summary: "For password reset"
+      description: "To Reset Password"
+      operationId: "reset"
+      parameters:
+      
+      - in: "query"
+        name: "email"
+        description: "Enter Email"
+        required: true
+        schema:
+          type: string
+          example: "game388019@gmail.com"
+      
+      - in: "query"
+        name: "backup"
+        description: "Enter Backup Code"
+        required: true
+        schema:
+          type: string
+          example: "@#$%^&"
+          
+      - in: "query"
+        name: "password"
+        description: "Enter Password"
+        required: true
+        schema:
+          type: string
+          example: "12345678"
+      
+      responses:
+        
+        "200": 
+          description: "Password Updated Successfully"
+        
+        "400":
+          description: "Backup Code Doesn't Match"
+        
+        "404":
+          description: "Email Doesn't Exist"
+        
+        
+        
+  
+  /api/log:
+    post:
+      tags:
+      - "Logs"
+      summary: "Add a new log"
+      description: ""
+      operationId: "addlog"
+      parameters:
+      
+      - in: "header"
+        name: "authorization-token"
+        description: "an authorization header"
+        required: true
+        schema:  
+          type: string
+        
+      
+      - in: "query"
+        name: "time"
+        description: ""
+        required: true
+        schema:
+          type: number
+          example: 2022-09-04T21:45
+      
+      - in: "query"
+        name: "value"
+        description: "Value to be added"
+        required: true
+        schema:
+          type: string
+          example: "5"
+      - in: "query"
+        name: "note"
+        description: ""
+        required: false
+        schema:
+          type: string
+          example: "It was an amazing run"
+      
+      - in: "query"
+        name: "tracker_id"
+        description: "Tracker id to be added"
+        required: true
+        schema:
+          type: integer
+          example: 1
+      
+      
+      
+      responses:
+        "201": 
+          description: "Log Added Successfully"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                    properties:
+                      log_id:
+                        type: integer
+                        example: 1
+                      time:
+                        type: number
+                        example: 1231.21321
+                      value:
+                        type: string
+                        example: "5"
+                      note:
+                        type: string
+                        example: "It was an amazing run"
+                      tracker_id:
+                        type: integer
+                        example: 1
+                      
+        "400":
+          description: "Invalid input"
+        "401":
+          description: "Invalid Token Or Token Missing"
+
+  /api/log/{log_id}:
+    get:
+      tags:
+      - "Logs"
+      summary: "View a Log"
+      description: ""
+      operationId: "viewlog"
+      parameters:
+      
+      - in: "header"
+        name: "authorization-token"
+        description: "an authorization header"
+        required: true
+        schema:  
+          type: string
+        
+      - in: "path"
+        name: "log_id"
+        description: ""
+        required: true
+        schema:
+          type: integer
+      
+      responses:
+        "200": 
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                    properties:
+                      log_id:
+                        type: integer
+                        example: 1
+                      time:
+                        type: number
+                        example: 2022-09-04T21:49
+                      value:
+                        type: string
+                        example: "5"
+                      note:
+                        type: string
+                        example: "It was an amazing run"
+                      tracker_id:
+                        type: integer
+                        example: 1
+                      
+        "404":
+          description: "Invalid Log Id"
+        "401":
+          description: "Invalid Token or Token Missing"
+      
+    put:
+      tags:
+      - "Logs"
+      summary: "Update a Log"
+      description: ""
+      operationId: "updlog"
+      parameters:
+      
+      - in: "header"
+        name: "authorization-token"
+        description: "an authorization header"
+        required: true
+        schema:  
+          type: string
+      
+      - in: "path"
+        name: "log_id"
+        description: ""
+        required: true
+        schema:
+          type: integer
+      - in: "query"
+        name: "time"
+        description: ""
+        required: false
+        schema:
+          type: number
+          example: 2022-09-04T21:52
+      - in: "query"
+        name: "value"
+        description: "Value to be added"
+        required: false
+        schema:
+          type: integer
+          example: "5"
+      - in: "query"
+        name: "note"
+        description: "Note to be added"
+        required: false
+        schema:
+          type: string
+          example: "I enjoyed running today"
+      
+      responses:
+        "200": 
+          description: "Log Updated Successfully"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                    properties:
+                      log_id:
+                        type: integer
+                        example: 1
+                      time:
+                        type: number
+                        example: 2022-09-04T21:51
+                      value:
+                        type: string
+                        example: "5"
+                      note:
+                        type: string
+                        example: "I enjoyed running today"
+                      tracker_id:
+                        type: integer
+                        example: 1
+                      
+        "404":
+          description: "Invalid Log Id"
+        "405":
+          description: "Invalid input"
+        "401":
+          description: "Invalid Token or Token Missing"
+          
+    delete:
+      tags:
+      - "Logs"
+      summary: "Delete a log"
+      description: ""
+      operationId: "dellog"
+      parameters:
+      
+      - in: "header"
+        name: "authorization-token"
+        description: "an authorization header"
+        required: true
+        schema:  
+          type: string
+      
+      - in: "path"
+        name: "log_id"
+        description: ""
+        required: true
+        schema:
+          type: integer
+      
+      responses:
+        "200": 
+          description: "Log Deleted Successfully"
+          
+        "404":
+          description: "Invalid Log Id"
+        
+        "401":
+          description: "Invalid Token or Token Missing"
+
+
+
+  /api/tracker:
+    post:
+      tags:
+      - "Trackers"
+      summary: "Add a new Tracker"
+      description: ""
+      operationId: "addtracker"
+      parameters:
+      
+      - in: "header"
+        name: "authorization-token"
+        description: "an authorization header"
+        required: true
+        schema:  
+          type: string
+      
+      - in: "query"
+        name: "tracker_name"
+        description: ""
+        required: true
+        schema:
+          type: string
+          example: "Running"
+      
+      - in: "query"
+        name: "description"
+        description: ""
+        required: true
+        schema:
+          type: string
+          example: "For measuring run distance"
+      
+      - in: "query"
+        name: "tracker_type"
+        description: "Choose Numerical, Multiple Choice, Boolean or Time Duration"
+        required: true
+        schema:
+          type: string
+          example: "Numerical"
+      
+      - in: "query"
+        name: "setting"
+        description: "Fill this only if tracker type is Numerical or Multiple Choice"
+        required: false
+        schema:
+          type: string
+          example: ""
+      
+      - in: "query"
+        name: "user_id"
+        description: "User id to be added"
+        required: true
+        schema:
+          type: integer
+          example: 1
+      
+      - in: "query"
+        name: "last_time"
+        description: "Last Time Tracker was Active, For new Fill the current time"
+        required: true
+        schema:
+          type: number
+          example: 2022-09-04T21:53
+      
+      
+      
+      responses:
+        "201": 
+          description: "Tracker Added Successfully"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                    properties:
+                      Tracker id:
+                        type: integer
+                        example: 1
+                      
+                      tracker_name:
+                        type: string
+                        example: "Running"
+                      description:
+                        type: string
+                        example: "For measuring run distance"
+                      tracker_type:
+                        type: string
+                        example: "Numerical"
+                      setting:
+                        type: string
+                        example: ""
+                      user_id:
+                        type: integer
+                        example: 1
+                      last_time:
+                        type: number
+                        example: 1231.21321
+        "405":
+          description: "Invalid input"
+        "401":
+          description: "Invalid Token or Token Missing"
+           
+      
+  /api/tracker/{tracker_id}:
+    get:
+      tags:
+      - "Trackers"
+      summary: "View a Tracker"
+      description: ""
+      operationId: "viewtracker"
+      parameters:
+      
+      - in: "header"
+        name: "authorization-token"
+        description: "an authorization header"
+        required: true
+        schema:  
+          type: string
+      
+      - in: "path"
+        name: "tracker_id"
+        description: ""
+        required: true
+        schema:
+          type: integer
+      
+      responses:
+        "200": 
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                    properties:
+                      tracker_id:
+                        type: integer
+                        example: 1
+                      
+                      tracker_name:
+                        type: string
+                        example: "Running"
+                      description:
+                        type: string
+                        example: "For measuring run distance"
+                      tracker_type:
+                        type: string
+                        example: "Numerical"
+                      setting:
+                        type: string
+                        example: ""
+                      user_id:
+                        type: integer
+                        example: 1
+                      last_time:
+                        type: number
+                        example: 2022-09-04T21:53
+                      
+        "404":
+          description: "Invalid Tracker Id"
+        
+        "401":
+          description: "Invalid Token or Token Missing"
+    
+    put:
+      tags:
+      - "Trackers"
+      summary: "Update a Tracker"
+      description: ""
+      operationId: "updtracker"
+      parameters:
+      
+      - in: "header"
+        name: "authorization-token"
+        description: "an authorization header"
+        required: true
+        schema:  
+          type: string
+      
+      - in: "path"
+        name: "tracker_id"
+        description: ""
+        required: true
+        schema:
+          type: integer
+          example: 1
+      
+      - in: "query"
+        name: "tracker_name"
+        description: ""
+        required: false
+        schema:
+          type: string
+          example: "Running"
+      
+      - in: "query"
+        name: "description"
+        description: ""
+        required: false
+        schema:
+          type: string
+          example: "For Measuring Run Distance"
+      
+      
+      - in: "query"
+        name: "last_time"
+        description: ""
+        required: false
+        schema:
+          type: number
+          example: 2022-09-04T21:53
+      
+      responses:
+        "200": 
+          description: "Tracker Updated Successfully"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                    properties:
+                      Tracker id:
+                        type: integer
+                        example: 1
+                      
+                      Tracker Name:
+                        type: string
+                        example: "Running"
+                      Description:
+                        type: string
+                        example: "For Measuring Run Distance"
+                      Tracker Type:
+                        type: string
+                        example: "Numerical"
+                      Setting:
+                        type: string
+                        example: ""
+                      User id:
+                        type: integer
+                        example: 1
+                      Timestamp:
+                        type: number
+                        example: 2022-09-04T21:54
+                      
+        "404":
+          description: "Invalid Log Id"
+          
+        "405":
+          description: "Invalid input"
+          
+        "401":
+          description: "Invalid Token or Token is Missing"
+        
+
+    delete:
+      tags:
+      - "Trackers"
+      summary: "Delete a Tracker"
+      description: ""
+      operationId: "deltracker"
+      parameters:
+      
+      - in: "header"
+        name: "authorization-token"
+        description: "an authorization header"
+        required: true
+        schema:  
+          type: string
+      
+      - in: "path"
+        name: "tracker_id"
+        description: ""
+        required: true
+        schema:
+          type: integer
+      
+      responses:
+        "200": 
+          description: "Tracker Deleted Successfully"
+          
+        "404":
+          description: "Invalid Tracker Id"
+          
+        "401":
+          description: "Invalid Token or Token Missing"
+
+      
+  /api/user:
+    post:
+      tags:
+      - "Users"
+      summary: "Add a new User"
+      description: ""
+      operationId: "adduser"
+      parameters:
+      
+      - in: "query"
+        name: "email"
+        description: ""
+        required: true
+        schema:
+          type: string
+          example: "game388019@gmail.com"
+      
+      - in: "query"
+        name: "password"
+        description: ""
+        required: true
+        schema:
+          type: string
+          example: "asdfghjkl"
+      
+      - in: "query"
+        name: "name"
+        description: ""
+        required: true
+        schema:
+          type: string
+          example: "Mohd Ikram"
+      
+      - in: "query"
+        name: "age"
+        description: ""
+        required: true
+        schema:
+          type: integer
+          example: 18
+      
+      - in: "query"
+        name: "backup"
+        description: "Backup code in case of password reset"
+        required: true
+        schema:
+          type: string
+          example: "@#$%^&"
+      
+      - in: "query"
+        name: "gender"
+        description: "F for Female and M for Male"
+        required: true
+        schema:
+          type: string
+          example: "M"
+      
+      
+      
+      responses:
+        "201": 
+          description: "User Added Successfully"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                    properties:
+                      user_id:
+                        type: integer
+                        example: 1
+                      
+                      email:
+                        type: string
+                        example: "game388019@gmail.com"
+                        
+                      password:
+                        type: string
+                        example: "asdfghjkl"
+                      name:
+                        type: string
+                        example: "Mohd Ikram"
+                      age:
+                        type: integer
+                        example: 18
+                      backup:
+                        type: string
+                        example: "@#$%^&"
+                      gender:
+                        type: string
+                        example: "M"
+        "405":
+          description: "Invalid input"
+          
+          
+  /api/user/{user_id}:        
+    put:
+      tags:
+      - "Users"
+      summary: "Update a User"
+      description: ""
+      operationId: "upduser"
+      parameters:
+      
+      - in: "header"
+        name: "authorization-token"
+        description: "an authorization header"
+        required: true
+        schema:  
+          type: string
+      
+      - in: "path"
+        name: "user_id"
+        description: ""
+        required: true
+        schema:
+          type: integer
+          example: 1
+      
+      - in: "query"
+        name: "password"
+        description: ""
+        required: false
+        schema:
+          type: string
+          example: "asdfghjkl"
+      
+      - in: "query"
+        name: "name"
+        description: ""
+        required: false
+        schema:
+          type: string
+          example: "Ikram"
+      
+      - in: "query"
+        name: "age"
+        description: ""
+        required: false
+        schema:
+          type: integer
+          example: 23
+      
+      - in: "query"
+        name: "backup"
+        description: "Backup code in case of password reset"
+        required: false
+        schema:
+          type: string
+          example: "@#$%^&"
+      
+      - in: "query"
+        name: "gender"
+        description: "F for Female or M for Male"
+        required: false
+        schema:
+          type: string
+          example: "M"
+      
+      
+      
+      responses:
+        "201": 
+          description: "User Updated Successfully"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                    properties:
+                      user_id:
+                        type: integer
+                        example: 1
+                      
+                      email:
+                        type: string
+                        example: "mdikram88"
+                      password:
+                        type: string
+                        example: "asdfghjkl"
+                      name:
+                        type: string
+                        example: "Zameer"
+                      age:
+                        type: integer
+                        example: 18
+                      backup:
+                        type: string
+                        example: "@#$%^&"
+                      gender:
+                        type: string
+                        example: "Female"
+        "405":
+          description: "Invalid input"
+        
+        "401":
+          description: "Invalid Token or Token Missing"
+    
+    delete:
+      tags:
+      - "Users"
+      summary: "Delete a User"
+      description: ""
+      operationId: "deluser"
+      parameters:
+      
+      - in: "header"
+        name: "authorization-token"
+        description: "an authorization header"
+        required: true
+        schema:  
+          type: string
+      
+      - in: "path"
+        name: "user_id"
+        description: ""
+        required: true
+        schema:
+          type: integer
+      
+      responses:
+        "200": 
+          description: "User Deleted Successfully"
+          
+        "404":
+          description: "Invalid User Id"
+        
+        "401":
+          description: "Invalid Token or Token Missing"
+
+      

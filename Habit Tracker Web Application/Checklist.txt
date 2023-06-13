@@ -1,0 +1,16 @@
+﻿Checklist For MAD2 Project
+
+
+✅ Flask For Api
+✅ VueJs CLI
+✅ Bootstrap For UI
+✅ SQLite for database
+✅ Redis For Caching        
+✅ Celery For batch jobs
+✅ Token Based Authentication
+✅ Model for User, Tracker, Log
+✅ Export Option for Trackers, Logs
+✅ Daily Reminder Jobs
+✅ Monthly Report Jobs
+✅ Project Report
+✅ Presentation Video

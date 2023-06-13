@@ -1,0 +1,15 @@
+<form @submit="validate" novalidate="true">
+          <h5>Username/Email</h5>
+          <input type="text" v-model="username" required />
+          <br />
+          <h5>Password</h5>
+          <input type="password" v-model="password" required />
+          <br />
+          <br />
+          <input
+            type="submit"
+            value="Login"
+            class="btn btn-primary"
+            role="button"
+          />
+        </form>
